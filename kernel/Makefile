@@ -130,6 +130,11 @@ ifeq ($(shell grep -q "strncpy_from_user_nofault" $(srctree)/include/linux/uacce
 ccflags-y += -DKSU_HAS_STRNCPY_FROM_USER_NOFAULT
 endif
 
+# SUSFS >= 2.3.1 provides the getpriority priority-uid filter
+ifeq ($(shell grep -q "susfs_parse_priority_app_strings" $(srctree)/fs/susfs.c; echo $$?),0)
+ccflags-y += -DKSU_HAS_SUSFS_PRIORITY_FILTER
+endif
+
 ifeq ($(shell grep -q "atomic_t\s\+filter_count" $(srctree)/include/linux/seccomp.h; echo $$?),0)
 ccflags-y += -DKSU_OPTIONAL_SECCOMP_FILTER_CNT
 endif

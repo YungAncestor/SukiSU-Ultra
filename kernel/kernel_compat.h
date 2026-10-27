@@ -158,6 +158,15 @@ static inline void ksu_kvfree(void *buf)
 #define kvfree ksu_kvfree
 #endif
 
+// kvcalloc was introduced in v4.18
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 18, 0)
+static inline void *ksu_kvcalloc(size_t n, size_t size, gfp_t flags)
+{
+    return kvmalloc_array(n, size, flags | __GFP_ZERO);
+}
+#define kvcalloc ksu_kvcalloc
+#endif
+
 // for supercalls.c fd install tw
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 7, 0)
 #ifndef TWA_RESUME
